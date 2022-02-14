@@ -41,10 +41,9 @@ except Exception:
 
 BasePage().locator(c).click()
 print(BasePage().width)
-print(BasePage().driver.page_source)
 
 with open('html.xml', 'w', encoding='utf-8') as q:
-    q.write(BasePage().driver.page_source.type)
+    q.write(BasePage().driver.page_source)
 # if __name__ == '__main__':
 
 # width = driver.get_window_size()['width']

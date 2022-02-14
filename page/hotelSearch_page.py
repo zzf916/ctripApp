@@ -15,5 +15,8 @@ class HotelSearchPage(BasePage):
     search = (By.XPATH, '//*[@resource-id="ctrip.android.view:id/a" and @text="查 询"]')
 
     def action(self):
-        self.locator(self.popup).click()
-        self.locator(self.search).click()
+        try:
+            self.locator(self.popup).click()
+            self.locator(self.search).click()
+        except Exception:
+            self.locator(self.search).click()

@@ -9,7 +9,7 @@ from comm.basepage import BasePage
 
 
 class HotelListSearchPage(BasePage):
-    search = (By.XPATH, '//*[@resource-id="ctrip.android.view:id/a" and @text="关键字/位置/品牌/酒店名"]')  # 搜索框
+    search = (By.XPATH, '//*[@resource-id="ctrip.android.view:id/a" and @class="android.widget.EditText"]')  # 搜索框
     hotelList = (By.XPATH, '//*[@resource-id="ctrip.android.view:id/a" and @class="android.view.ViewGroup"]')  # 酒店列表
 
     def action(self, hotelname):

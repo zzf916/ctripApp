@@ -8,7 +8,6 @@ from selenium.webdriver.common.by import By
 from comm.basepage import BasePage
 
 
-
 class FirstPage(BasePage):
     hotel = (By.XPATH, '//android.widget.FrameLayout[@content-desc="酒店"]/android.widget.FrameLayout/android'
                        '.widget.FrameLayout/android.widget.LinearLayout')
