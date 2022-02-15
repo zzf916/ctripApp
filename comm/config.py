@@ -14,7 +14,7 @@ from comm.logs import Logging
 
 log = Logging().logger
 
-ini_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data'))
+ini_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../config'))
 timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
 
 
@@ -63,9 +63,14 @@ class Excel(object):
     def ExcelR(self):
         list_ = []
         for i in range(2, self.r_max + 1):
-            hotel_data = dict(hotelName=self.sheet.cell(row=i, column=3).value,
-                              row=i)
-            yield hotel_data
+            # hotel_data = dict(hotelName=self.sheet.cell(row=i, column=3).value,
+            #                   row=i,
+            #                   r_maxr=self.r_max,
+            #                   c_max=self.c_max)
+            # yield hotel_data
+            hotel_data = self.sheet.cell(row=i, column=3).value
+            list_.append(hotel_data)
+        return list_
 
     def ExcelW(self, args, row):
         try:
@@ -75,14 +80,11 @@ class Excel(object):
             log.info("写入Excel失败")
 
 
-
-
-
 if __name__ == '__main__':
     print(getConfigData('trip'))
     workbook = getConfigData('Excel').get('workbook')
     print(workbook)
-    data = next(Excel(workbook_path=workbook, sheet='Sheet1').ExcelR())
+    data = Excel(workbook_path=workbook, sheet='Sheet1').ExcelR()
     print(data)
-    row = data.get('row')
+    # row = data.get('row')
     # Excel(workbook_path=workbook, sheet='Sheet1').ExcelW(timestamp, 1)

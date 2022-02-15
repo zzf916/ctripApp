@@ -1,0 +1,1 @@
+2022-02-15 10:07:58,781 basepage.py[line:31]INFO - 获取元素失败：('xpath', '//android.widget.FrameLayout[@content-desc="酒店"]/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout')

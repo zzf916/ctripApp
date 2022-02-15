@@ -13,7 +13,7 @@ class HotelListPage(BasePage):
     def __init__(self, name="hh"):
         super().__init__()
         self.hotel_name = name
-        self.hotel = (By.XPATH, '//*[contains(@content-desc, "{}")]'.format(self.hotel_name))  # 酒店
+        self.hotel = (By.XPATH, '//*[@class="android.view.View" and contains(@content-desc, "{}")]'.format(self.hotel_name))  # 酒店
         self.search = (By.XPATH, '//*[@class="android.widget.ImageView" and @content-desc="关键字/位置/品牌/酒店名"]')  # 搜索框
 
 
@@ -21,7 +21,7 @@ class HotelListPage(BasePage):
         self.locator(self.search).click()
 
     def action2(self):
-        self.locators(self.hotel)[1].click()
+        self.locators(self.hotel)[-1].click()
 
     def action3(self):
         self.locator(self.hotel).click()

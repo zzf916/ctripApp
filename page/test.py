@@ -5,6 +5,7 @@
 # Desc :
 import time
 
+from comm.config import Excel
 from page.first_page import FirstPage
 from page.hotelDetail_page import HotelDetailPage
 from page.hotelListSearch_page import HotelListSearchPage
@@ -17,38 +18,37 @@ time.sleep(3)
 HotelSearchPage().action()
 time.sleep(3)
 
-def loop1(*, hotelname=None):
+
+def loop1(*, hotelname=None, row):
     HotelListPage().action1()
-    time.sleep(3)
 
     # HotelListSearchPage().action('杭州浙勤开元名都大酒店')
     HotelListSearchPage().action(hotelname)
 
-    time.sleep(3)
-
     HotelListPage(hotelname).action2()
-    time.sleep(3)
 
     a = HotelDetailPage().action()
-    print(a)
+    Excel(workbook_path='/config\ctrip.xlsx', sheet='Sheet1').ExcelW(str(a), row)
 
 
-def loop2(history_hotelname, hotelname):
+def loop2(history_hotelname, hotelname, row):
     HotelListPage(name=history_hotelname).action3()
-    time.sleep(3)
 
     # HotelListSearchPage().action('杭州浙勤开元名都大酒店')
     HotelListSearchPage().action(hotelname)
 
-    time.sleep(3)
-
     HotelListPage(hotelname).action2()
-    time.sleep(3)
 
     a = HotelDetailPage().action()
+    Excel(workbook_path='/config\ctrip.xlsx', sheet='Sheet1').ExcelW(str(a), row)
+
     print(a)
 
 
-loop1(hotelname='杭州浙勤开元名都大酒店')
+a = next(Excel(workbook_path='/config\ctrip.xlsx', sheet='Sheet1').ExcelR())
+print(a)
+loop1(hotelname='杭州浙勤开元名都大酒店', row=a.get('row'))
 
-loop2('杭州浙勤开元名都大酒店', '南京固城湾开元度假酒店')
+# a =next(Excel(workbook_path='D:\github\ctripApp\config\ctrip.xlsx', sheet='Sheet1').ExcelR())
+
+loop2('杭州浙勤开元名都大酒店', '南京固城湾开元度假酒店', a.get('row'))

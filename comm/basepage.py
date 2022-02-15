@@ -9,7 +9,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from comm.config import getConfigData
 from comm.logs import Logging
 
-data = getConfigData('oppo')
+data = getConfigData('trip')
 log = Logging().logger
 webDriver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', data)
 
@@ -17,15 +17,17 @@ class BasePage(object):
 
     def __init__(self):
         self.driver = webDriver
+        self.driver.implicitly_wait(5)
         self.width = self.driver.get_window_size().get('width')
         self.height = self.driver.get_window_size().get('height')
 
 
     def locator(self, loc, index=0):
         try:
-            WebDriverWait(self.driver, 5, 1).until(lambda driver: driver.find_element(*loc).is_displayed())
+            # WebDriverWait(self.driver, 5, 1).until(lambda driver: driver.find_element(*loc).is_displayed())
+            e = self.driver.find_elements(*loc)[index]
             log.info("获取到元素：%s" % str(loc))
-            return self.driver.find_elements(*loc)[index]
+            return e
         except Exception:
             log.info("获取元素失败：%s" % str(loc))
             return None
@@ -33,9 +35,10 @@ class BasePage(object):
 
     def locators(self, loc):
         try:
-            WebDriverWait(self.driver, 5, 1).until(lambda driver: driver.find_element(*loc).is_displayed())
+            # WebDriverWait(self.driver, 5, 1).until(lambda driver: driver.find_element(*loc).is_displayed())
+            e = self.driver.find_elements(*loc)
             log.info("获取到元素：%s" % str(loc))
-            return self.driver.find_elements(*loc)
+            return e
         except Exception:
             log.info("获取元素失败：%s" % str(loc))
             return None
