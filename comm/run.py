@@ -13,32 +13,31 @@ from page.hotelListSearch_page import HotelListSearchPage
 from page.hotelList_page import HotelListPage
 from page.hotelSearch_page import HotelSearchPage
 
-
 excel = getConfigData('Excel').get('workbook')
 
 hotel = Excel(workbook_path=excel, sheet='Sheet1').ExcelR()
 
 
-def loop1(*, filename, hotelName=None, row=0):
+def loop1(hotelName: tuple, *, filename, row=0):
     HotelListPage().action1()
-    HotelListSearchPage().action(hotelName)
-    HotelListPage(hotelName).action2()
+    HotelListSearchPage(hotelName[0]).action()
+    HotelListPage(hotelName[0]).action2()
     data = HotelDetailPage().action()
 
     data_dict = {hotelName: data}
     with open(filename, mode='w', encoding='UTF-8') as f:
-        f.write(str(data_dict))
+        f.write(str(data_dict) + '\n')
     print('success')
 
 
-def loop2(pastHotel, hotelNow, *, filename):
-    HotelListPage(name=pastHotel).action3()
-    HotelListSearchPage().action(hotelNow)
-    HotelListPage(hotelNow).action2()
+def loop2(pastHotel: tuple, hotelNow: tuple, *, filename):
+    HotelListPage(name=pastHotel[0]).action3()
+    HotelListSearchPage(hotelNow[0]).action()
+    HotelListPage(hotelNow[0]).action2()
     data = HotelDetailPage().action()
     data_dict = {hotelNow: data}
     with open(filename, mode='a', encoding='UTF-8') as f:
-        f.write(str(data_dict))
+        f.write(str(data_dict) + '\n')
     print('success')
 
 
@@ -52,6 +51,6 @@ while True:
     HotelSearchPage().action()
     time.sleep(3)
 
-    loop1(hotelName=hotel[0],filename=file)
+    loop1(hotelName=hotel[0], filename=file)
     for i in range(1, len(hotel)):
         loop2(hotel[i - 1], hotel[i], filename=file)

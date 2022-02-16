@@ -21,7 +21,7 @@ class HotelDetailPage(BasePage):
     def action(self):
         time.sleep(3)
         list_ = []
-        for i in range(20):
+        for i in range(8):
             # print(self.driver.page_source)
 
             rooms = self.locators(self.roomDetail)
@@ -37,7 +37,7 @@ class HotelDetailPage(BasePage):
                     list_.append(a)
             # print(list_)
             if self.locator(self.exitFlag) is None:
-                self.driver.swipe(self.width / 2, self.height * 0.8, self.width / 2, self.height * 0.3, duration=1000)
+                self.driver.swipe(self.width / 2, self.height * 0.8, self.width / 2, self.height * 0.3, duration=1500)
             else:
                 break
         self.driver.back()

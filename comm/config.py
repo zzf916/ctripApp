@@ -68,7 +68,7 @@ class Excel(object):
             #                   r_maxr=self.r_max,
             #                   c_max=self.c_max)
             # yield hotel_data
-            hotel_data = self.sheet.cell(row=i, column=3).value
+            hotel_data = (self.sheet.cell(row=i, column=3).value, self.sheet.cell(row=i, column=2).value)
             list_.append(hotel_data)
         return list_
 
