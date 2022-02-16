@@ -29,7 +29,8 @@ class HotelDetailPage(BasePage):
                 for room in rooms:
                     # time.sleep(3)
                     try:
-                        price = room.find_element_by_xpath("//*[contains(@content-desc, '¥')]").get_attribute('content-desc')
+                        price = room.find_element_by_xpath("//*[contains(@content-desc, '¥')]").get_attribute(
+                            'content-desc')
                     except Exception:
                         price = None
                     room_detail = room.get_attribute("content-desc")
@@ -43,5 +44,5 @@ class HotelDetailPage(BasePage):
         self.driver.back()
         # self.locator(self.returnFlag).click()
 
-
-        return list_
+        l2 = sorted(set(list_), key=list_.index)
+        return l2

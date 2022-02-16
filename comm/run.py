@@ -41,10 +41,11 @@ def loop2(pastHotel: tuple, hotelNow: tuple, *, filename):
     print('success')
 
 
-while True:
-    timestamp = time.strftime('%Y-%m-%d %H%M%S')
+# while True:
+for a in range(1, 3):
+    timestamp = time.strftime('%Y%m%d%H%M%S')
     fileDir = os.path.join(os.path.dirname(__file__), '../data')
-    file = os.path.abspath(fileDir + '/' + '携程App数据' + timestamp + '.txt')
+    file = os.path.abspath(fileDir + '/' + 'ctrip' + timestamp + '.txt')
 
     FirstPage().action()
     time.sleep(3)
