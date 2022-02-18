@@ -3,11 +3,14 @@
 # Author: Off
 # Date : 2022/2/14
 # Desc : 酒店详情页
+import os
 import time
 
 from selenium.webdriver.common.by import By
 
 from comm.basepage import BasePage
+
+
 
 
 class HotelDetailPage(BasePage):
@@ -19,10 +22,16 @@ class HotelDetailPage(BasePage):
     returnFlag = (By.XPATH, "//android.view.View[@content-desc='收藏']/preceding-sibling::android.view.View[1]")  # 返回标记
 
     def action(self):
-        time.sleep(3)
+        time.sleep(5)
         list_ = []
         for i in range(8):
+
+            timestamp = time.strftime('%Y%m%d%H%M%S')
+            fileDir = os.path.join(os.path.dirname(__file__), '../sources')
+            file = os.path.abspath(fileDir + '/' + 'ctripPageSources' + timestamp + '.xml')
             # print(self.driver.page_source)
+            with open(file, mode='w', encoding='utf-8') as f:
+                f.write(self.driver.page_source)
 
             rooms = self.locators(self.roomDetail)
             if rooms is not None:
@@ -30,10 +39,10 @@ class HotelDetailPage(BasePage):
                     # time.sleep(3)
                     try:
                         price = room.find_element_by_xpath("//*[contains(@content-desc, '¥')]").get_attribute(
-                            'content-desc')
+                            'content-desc').replace('\n', "")
                     except Exception:
                         price = None
-                    room_detail = room.get_attribute("content-desc")
+                    room_detail = room.get_attribute("content-desc").split('\n')[0]
                     a = '({}, {})'.format(room_detail, price)
                     list_.append(a)
             # print(list_)
