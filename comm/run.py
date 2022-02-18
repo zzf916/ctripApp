@@ -6,6 +6,7 @@
 import os
 import time
 
+from comm.basepage import BasePage
 from comm.config import Excel, getConfigData
 from page.first_page import FirstPage
 from page.hotelDetail_page import HotelDetailPage
@@ -33,6 +34,7 @@ def loop1(hotelName: tuple, *, filename, row=0):
 def loop2(pastHotel: tuple, hotelNow: tuple, *, filename):
     HotelListPage(name=pastHotel[0]).action3()
     HotelListSearchPage(hotelNow[0]).action()
+    time.sleep(3)
     HotelListPage(hotelNow[0]).action2()
     data = HotelDetailPage().action()
     data_dict = {hotelNow: data}
@@ -41,8 +43,7 @@ def loop2(pastHotel: tuple, hotelNow: tuple, *, filename):
     print('success')
 
 
-# while True:
-for a in range(1, 3):
+while True:
     timestamp = time.strftime('%Y%m%d%H%M%S')
     fileDir = os.path.join(os.path.dirname(__file__), '../data')
     file = os.path.abspath(fileDir + '/' + 'ctrip' + timestamp + '.txt')
@@ -55,3 +56,7 @@ for a in range(1, 3):
     loop1(hotelName=hotel[0], filename=file)
     for i in range(1, len(hotel)):
         loop2(hotel[i - 1], hotel[i], filename=file)
+
+    BasePage().driver.quit()
+
+    time.sleep(60*60*10)
