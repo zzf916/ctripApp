@@ -9,10 +9,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 from comm.config import getConfigData
 from comm.logs import Logging
 
-data = getConfigData('trip')
+data = getConfigData('oppo')
 log = Logging().logger
-webDriver = webdriver.Remote(command_executor='http://127.0.0.1:4723/wd/hub', desired_capabilities=data,)
-
+webDriver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', data)
 
 class BasePage(object):
 
