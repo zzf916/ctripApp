@@ -6,3 +6,10 @@
 
 
 import xml.dom.minidom
+
+import re
+
+line = "this hdr-biz model server"
+pattern = "hdrq-biz"
+m = re.search(pattern, line)
+print(m)

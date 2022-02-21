@@ -4,6 +4,7 @@
 # Date : 2022/2/14
 # Desc : 酒店详情页
 import os
+import re
 import time
 
 from selenium.webdriver.common.by import By
@@ -11,6 +12,17 @@ from selenium.webdriver.common.by import By
 from comm.basepage import BasePage
 
 
+def getData(*, list2: list):
+    list1 = [("早餐", "早餐"), ("人床", "床型"), ("入住", "人数"), ("㎡", "平方")]
+    dict_ = {"早餐": None, "床型": None, "人数": None, "平方": None}
+    for i in list1:
+        for d in list2:
+            if re.search(i[0], d) is not None:
+                dict_[i[1]] = d
+                break
+            else:
+                continue
+    return dict_
 
 
 class HotelDetailPage(BasePage):
@@ -42,9 +54,13 @@ class HotelDetailPage(BasePage):
                             'content-desc').replace('\n', "")
                     except Exception:
                         price = None
-                    room_detail = room.get_attribute("content-desc").split('\n')[0]
-                    a = '({}, {})'.format(room_detail, price)
-                    list_.append(a)
+                    room_detail = room.get_attribute("content-desc").split('\n')
+                    dict_ = getData(list2=room_detail)
+                    dict_['价格'] = price
+                    dict_['房型'] = room_detail[0]
+                    # a = '({}, {})'.format(room_detail, price)
+                    list_.append(str(dict_))
+
             # print(list_)
             if self.locator(self.exitFlag) is None:
                 self.driver.swipe(self.width / 2, self.height * 0.8, self.width / 2, self.height * 0.3, duration=1500)

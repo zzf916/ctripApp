@@ -6,6 +6,7 @@
 
 import configparser
 import os
+import re
 import time
 
 import openpyxl
@@ -49,6 +50,7 @@ def getConfigData(section):
             value = True
         dict_ini[key] = value
     return dict_ini
+
 
 
 # Excel文件读写数据
