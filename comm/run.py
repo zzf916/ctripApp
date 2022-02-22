@@ -4,6 +4,7 @@
 # Date : 2022/2/11
 # Desc : 运行
 import os
+import random
 import time
 
 from comm.basepage import BasePage
@@ -34,7 +35,10 @@ def loop1(hotelName: tuple, *, filename, row=0):
 def loop2(pastHotel: tuple, hotelNow: tuple, *, filename):
     HotelListPage(name=pastHotel[0]).action3()
     HotelListSearchPage(hotelNow[0]).action()
-    time.sleep(3)
+
+    b = random.randint(3, 6)
+    time.sleep(b)
+
     HotelListPage(hotelNow[0]).action2()
     data = HotelDetailPage().action()
     data_dict = {hotelNow: data}
@@ -55,6 +59,10 @@ while True:
 
     loop1(hotelName=hotel[0], filename=file)
     for i in range(1, len(hotel)):
+
+        a = random.randint(3, 6)
+        time.sleep(a)
+
         loop2(hotel[i - 1], hotel[i], filename=file)
 
     BasePage().driver.quit()

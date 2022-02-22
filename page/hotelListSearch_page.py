@@ -3,6 +3,9 @@
 # Author: Off
 # Date : 2022/2/13
 # Desc : 酒店搜索
+import random
+import time
+
 from selenium.webdriver.common.by import By
 
 from comm.basepage import BasePage
@@ -17,4 +20,8 @@ class HotelListSearchPage(BasePage):
 
     def action(self):
         self.locator(self.search).send_keys(self.hotel_name)
+
+        a = random.randint(1, 3)
+        time.sleep(a)
+
         self.locators(self.hotelList)[1].click()

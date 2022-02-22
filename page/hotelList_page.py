@@ -3,6 +3,7 @@
 # Author: Off
 # Date : 2022/2/13
 # Desc : 酒店列表
+import random
 import time
 
 from selenium.webdriver.common.by import By
@@ -20,12 +21,21 @@ class HotelListPage(BasePage):
 
 
     def action1(self):
+        a = random.randint(1, 3)
+        time.sleep(a)
+
         self.locator(self.search).click()
 
     def action2(self):
-        time.sleep(3)
+
+        a = random.randint(3, 6)
+        time.sleep(a)
+
         self.locators(self.hotel)[1].click()
 
     def action3(self):
+        a = random.randint(1, 3)
+        time.sleep(a)
+
         self.locator(self.hotel).click()
 
