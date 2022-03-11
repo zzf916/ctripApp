@@ -9,13 +9,15 @@ from selenium.webdriver.support.wait import WebDriverWait
 from comm.config import getConfigData
 from comm.logs import Logging
 
-data = getConfigData('oppo')
+data = getConfigData('trip')
 log = Logging().logger
-webDriver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', data)
+# webDriver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', data)
 
 class BasePage(object):
 
-    def __init__(self):
+    # driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', data)
+
+    def __init__(self, *, webDriver):
         self.driver = webDriver
         self.driver.implicitly_wait(5)
         self.width = self.driver.get_window_size().get('width')

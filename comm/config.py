@@ -64,7 +64,7 @@ class Excel(object):
 
     def ExcelR(self):
         list_ = []
-        for i in range(2, self.r_max + 1):
+        for i in range(1, self.r_max + 1):
             # hotel_data = dict(hotelName=self.sheet.cell(row=i, column=3).value,
             #                   row=i,
             #                   r_maxr=self.r_max,

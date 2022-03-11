@@ -13,8 +13,8 @@ from comm.basepage import BasePage
 
 class HotelListPage(BasePage):
 
-    def __init__(self, name="hh"):
-        super().__init__()
+    def __init__(self, name="hh", *, driver):
+        super().__init__(webDriver=driver)
         self.hotel_name = name
         self.hotel = (By.XPATH, '//*[contains(@content-desc, "{}")]'.format(self.hotel_name))  # 酒店
         self.search = (By.XPATH, '//*[@class="android.widget.ImageView" and @content-desc="关键字/位置/品牌/酒店名"]')  # 搜索框
