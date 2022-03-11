@@ -1,8 +1,0 @@
-2022-02-15 10:53:20,685 basepage.py[line:29]INFO - 获取到元素：('xpath', '//android.widget.FrameLayout[@content-desc="酒店"]/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout')
-2022-02-15 10:53:29,859 basepage.py[line:32]INFO - 获取元素失败：('xpath', '//*[@class="android.widget.Image" and @text="close-icon-white"]')
-2022-02-15 10:53:29,955 basepage.py[line:29]INFO - 获取到元素：('xpath', '//*[@resource-id="ctrip.android.view:id/a" and @text="查 询"]')
-2022-02-15 10:53:33,115 basepage.py[line:29]INFO - 获取到元素：('xpath', '//*[@class="android.widget.ImageView" and @content-desc="关键字/位置/品牌/酒店名"]')
-2022-02-15 10:53:36,337 basepage.py[line:29]INFO - 获取到元素：('xpath', '//*[@resource-id="ctrip.android.view:id/a" and @class="android.widget.EditText"]')
-2022-02-15 10:53:37,845 basepage.py[line:29]INFO - 获取到元素：('xpath', '//*[@resource-id="ctrip.android.view:id/a" and @class="android.view.ViewGroup"]')
-2022-02-15 10:53:42,189 basepage.py[line:40]INFO - 获取到元素：('xpath', '//*[@class="android.view.View" and contains(@content-desc, "南京固城湾开元度假酒店")]')
-2022-02-15 10:53:46,684 basepage.py[line:40]INFO - 获取到元素：('xpath', "//*[contains(@content-desc, '入住') and @class='android.view.View']")
