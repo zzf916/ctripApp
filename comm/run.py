@@ -19,12 +19,8 @@ from page.hotelList_page import HotelListPage
 from page.hotelSearch_page import HotelSearchPage
 
 excel = getConfigData('Excel').get('workbook')
-
 hotel = Excel(workbook_path=excel, sheet='Sheet1').ExcelR()
-# data1 = getConfigData('trip')
-#
-# webDriver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', data1)
-
+configData = getConfigData('trip')
 
 def loop1(hotelName: tuple, *, filename, driver, row=0):
     HotelListPage(driver=driver).action1()
@@ -54,8 +50,7 @@ def loop2(pastHotel: tuple, hotelNow: tuple, *, filename, driver):
 
 
 def running1():
-    data = getConfigData('trip')
-    driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', data)
+    driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', configData)
 
     timestamp = time.strftime('%Y%m%d%H%M%S')
     fileDir = os.path.join(os.path.dirname(__file__), '../data')
@@ -79,8 +74,7 @@ def running1():
 
 
 def running2():
-    data = getConfigData('trip')
-    driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', data)
+    driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', configData)
 
     timestamp = time.strftime('%Y%m%d%H%M%S')
     fileDir = os.path.join(os.path.dirname(__file__), '../data')
