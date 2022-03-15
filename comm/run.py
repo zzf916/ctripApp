@@ -12,6 +12,7 @@ from appium import webdriver
 
 from comm.basepage import BasePage
 from comm.config import Excel, getConfigData
+from comm.linuxCon import LinuxBase
 from page.first_page import FirstPage
 from page.hotelDetail_page import HotelDetailPage
 from page.hotelListSearch_page import HotelListSearchPage
@@ -21,6 +22,7 @@ from page.hotelSearch_page import HotelSearchPage
 excel = getConfigData('Excel').get('workbook')
 hotel = Excel(workbook_path=excel, sheet='Sheet1').ExcelR()
 configData = getConfigData('trip')
+bigdata = getConfigData('bigdata')
 
 def loop1(hotelName: tuple, *, filename, driver, row=0):
     HotelListPage(driver=driver).action1()
@@ -55,6 +57,7 @@ def running1():
     timestamp = time.strftime('%Y%m%d%H%M%S')
     fileDir = os.path.join(os.path.dirname(__file__), '../data')
     file = os.path.abspath(fileDir + '/' + 'ctrip' + timestamp + '.txt')
+    filename = 'ctrip' + timestamp + '.txt'
 
     FirstPage(webDriver=driver).action()
     time.sleep(3)
@@ -69,6 +72,7 @@ def running1():
         loop2(hotel[i - 1], hotel[i], filename=file, driver=driver)
 
     BasePage(webDriver=driver).driver.quit()
+    LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
 
     # time.sleep(60 * 60 * 10)
 
@@ -79,6 +83,7 @@ def running2():
     timestamp = time.strftime('%Y%m%d%H%M%S')
     fileDir = os.path.join(os.path.dirname(__file__), '../data')
     file = os.path.abspath(fileDir + '/' + 'ctrip' + timestamp + '.txt')
+    filename = 'ctrip' + timestamp + '.txt'
 
     FirstPage(webDriver=driver).action()
     time.sleep(3)
@@ -95,6 +100,8 @@ def running2():
         loop2(hotel[i], hotel[i+1], filename=file, driver=driver)
 
     BasePage(webDriver=driver).driver.quit()
+    LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
+
 
 
 if __name__ == '__main__':

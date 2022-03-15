@@ -39,7 +39,7 @@ class LinuxBase(object):
         ssh_client = self.connection().get_transport()
         sftp = paramiko.SFTPClient.from_transport(ssh_client)
         sftp.put(localpath=outPath, remotepath=intoPath)
-        print("sucess")
+        print("文件上传成功！")
         ssh_client.close()
 
 
