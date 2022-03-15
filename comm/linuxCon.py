@@ -34,3 +34,15 @@ class LinuxBase(object):
             return std_out
         except Exception as e:
             print(e)
+
+    def upload(self, outPath, intoPath):
+        ssh_client = self.connection().get_transport()
+        sftp = paramiko.SFTPClient.from_transport(ssh_client)
+        sftp.put(localpath=outPath, remotepath=intoPath)
+        print("sucess")
+        ssh_client.close()
+
+
+if __name__ == '__main__':
+    a = {"hostname": "120.76.40.173", "port": "61900", "username": "bigdata", "password": "412082020@a"}
+    LinuxBase(a).upload('D:\GITHUB\ctripApp\data\ctrip20220216134243.txt', '/home/bigdata/ctrip20220216134243.txt')
