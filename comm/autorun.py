@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-# File : run.py
+# File : autorun.py
 # Author: Off
-# Date : 2022/2/11
-# Desc : 立即运行
+# Date : 2022/3/17
+# Desc : 定时任务
+
 import os
 import random
 import time
 
+import schedule as schedule
 from appium import webdriver
 
 from comm.basepage import BasePage
@@ -106,7 +108,10 @@ def running2():
 
 
 if __name__ == '__main__':
-    running1()
-    time.sleep(3)
-    running2()
+    schedule.every().day.at('10:00:00').do(running1)
+    schedule.every().day.at('15:00:00').do(running2)
+
+    while True:
+        schedule.run_pending()
+
 

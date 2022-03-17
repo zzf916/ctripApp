@@ -6,6 +6,7 @@
 
 import paramiko
 
+from comm.config import getConfigData
 from comm.logs import Logging
 
 log = Logging().logger
@@ -31,7 +32,7 @@ class LinuxBase(object):
         try:
             if self.key is not None:
                 try:
-                    private_key = paramiko.RSAKey.from_private_key_file(self.key)
+                    private_key = paramiko.RSAKey.from_private_key_file(self.key, password=self.password)
                     ssh_client.connect(allow_agent=False, hostname=self.hostname, port=self.port,
                                        username=self.username, pkey=private_key)
                     return ssh_client
@@ -96,6 +97,7 @@ class LinuxBase(object):
         ssh_client.close()
 
 
-# if __name__ == '__main__':
-#     a = {"hostname": "120.76.40.173", "port": "61900", "username": "bigdata", "password": "412082020@a"}
-#     LinuxBase(a).upload('D:\GITHUB\ctripApp\data\ctrip20220216134243.txt', '/home/bigdata/ctrip20220216134243.txt')
+if __name__ == '__main__':
+    a = getConfigData('test')
+    print(a)
+    LinuxBase(a).upload('D:\GITHUB\ctripApp\data\ctrip20220216134243.txt', '/home/bigdata/ctrip20220216134243.txt')
