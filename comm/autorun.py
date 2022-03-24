@@ -8,7 +8,7 @@ import os
 import random
 import time
 
-import schedule as schedule
+import schedule
 from appium import webdriver
 
 from comm.basepage import BasePage
@@ -51,67 +51,45 @@ def loop2(pastHotel: tuple, hotelNow: tuple, *, filename, driver):
         f.write(str(data_dict) + '\n')
     print('success')
 
+class Gob(object):
+    start_data = 1
 
-def running1():
-    driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', configData)
+    def running1(self):
+        driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', configData)
 
-    timestamp = time.strftime('%Y%m%d%H%M%S')
-    fileDir = os.path.join(os.path.dirname(__file__), '../data')
-    file = os.path.abspath(fileDir + '/' + 'ctrip' + timestamp + '.txt')
-    filename = 'ctrip' + timestamp + '.txt'
+        timestamp = time.strftime('%Y%m%d%H%M%S')
+        fileDir = os.path.join(os.path.dirname(__file__), '../data')
+        file = os.path.abspath(fileDir + '/' + 'ctrip' + timestamp + '.txt')
+        filename = 'ctrip' + timestamp + '.txt'
 
-    FirstPage(webDriver=driver).action()
-    time.sleep(3)
-    HotelSearchPage(webDriver=driver).action()
-    time.sleep(3)
+        FirstPage(webDriver=driver).action()
+        time.sleep(3)
+        HotelSearchPage(webDriver=driver).action()
+        time.sleep(3)
 
-    loop1(hotelName=hotel[0], filename=file, driver=driver)
-    for i in range(1, int(len(hotel) / 2)):
-        a = random.randint(3, 6)
-        time.sleep(a)
+        loop1(hotelName=hotel[Gob.start_data-1], filename=file, driver=driver)
+        for i in range(Gob.start_data, Gob.start_data+1):
+            a = random.randint(3, 6)
+            time.sleep(a)
+            try:
+                loop2(hotel[i - 1], hotel[i], filename=file, driver=driver)
+            except Exception:
+                break
 
-        loop2(hotel[i - 1], hotel[i], filename=file, driver=driver)
+        BasePage(webDriver=driver).driver.quit()
 
-    BasePage(webDriver=driver).driver.quit()
+        LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
 
-    LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
-
-    # time.sleep(60 * 60 * 10)
-
-
-def running2():
-    driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', configData)
-
-    timestamp = time.strftime('%Y%m%d%H%M%S')
-    fileDir = os.path.join(os.path.dirname(__file__), '../data')
-    file = os.path.abspath(fileDir + '/' + 'ctrip' + timestamp + '.txt')
-    filename = 'ctrip' + timestamp + '.txt'
-
-    FirstPage(webDriver=driver).action()
-    time.sleep(3)
-    HotelSearchPage(webDriver=driver).action()
-    time.sleep(3)
-
-    b = int(len(hotel) / 2)
-
-    loop1(hotelName=hotel[b], filename=file, driver=driver)
-    for i in range(int(len(hotel) / 2), len(hotel)-1):
-        a = random.randint(3, 6)
-        time.sleep(a)
-
-        loop2(hotel[i], hotel[i+1], filename=file, driver=driver)
-
-    BasePage(webDriver=driver).driver.quit()
-
-    LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
-
+        Gob.start_data = self.start_data + 2
 
 
 if __name__ == '__main__':
-    schedule.every().day.at('10:00:00').do(running1)
-    schedule.every().day.at('15:00:00').do(running2)
+    schedule.every().day.at('11:19:00').do(Gob().running1)
+    schedule.every().day.at('11:28:00').do(Gob().running1)
 
     while True:
         schedule.run_pending()
+
+
 
 
