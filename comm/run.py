@@ -24,6 +24,14 @@ configData = getConfigData('trip')
 bigdata = getConfigData('bigdata')
 
 def loop1(hotelName: tuple, *, filename, driver, row=0):
+    """
+    打开应用到获取第一家酒店数据
+    :param hotelName: 酒店名
+    :param filename: 数据写入文件路径
+    :param driver: driver对象
+    :param row:
+    :return:
+    """
     HotelListPage(driver=driver).action1()
     HotelListSearchPage(hotelName[0], driver=driver).action()
     HotelListPage(hotelName[0], driver=driver).action2()
@@ -36,6 +44,14 @@ def loop1(hotelName: tuple, *, filename, driver, row=0):
 
 
 def loop2(pastHotel: tuple, hotelNow: tuple, *, filename, driver):
+    """
+    第二家开始的酒店
+    :param pastHotel: 上此搜索的酒店
+    :param hotelNow: 本次搜索酒店
+    :param filename:
+    :param driver:
+    :return:
+    """
     HotelListPage(name=pastHotel[0], driver=driver).action3()
     HotelListSearchPage(hotelNow[0], driver=driver).action()
 
@@ -77,36 +93,7 @@ def running1():
     # time.sleep(60 * 60 * 10)
 
 
-def running2():
-    driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', configData)
-
-    timestamp = time.strftime('%Y%m%d%H%M%S')
-    fileDir = os.path.join(os.path.dirname(__file__), '../data')
-    file = os.path.abspath(fileDir + '/' + 'ctrip' + timestamp + '.txt')
-    filename = 'ctrip' + timestamp + '.txt'
-
-    FirstPage(webDriver=driver).action()
-    time.sleep(3)
-    HotelSearchPage(webDriver=driver).action()
-    time.sleep(3)
-
-    b = int(len(hotel) / 2)
-
-    loop1(hotelName=hotel[b], filename=file, driver=driver)
-    for i in range(int(len(hotel) / 2), len(hotel)-1):
-        a = random.randint(3, 6)
-        time.sleep(a)
-
-        loop2(hotel[i], hotel[i+1], filename=file, driver=driver)
-
-    BasePage(webDriver=driver).driver.quit()
-
-    LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
-
-
-
 if __name__ == '__main__':
     running1()
     time.sleep(3)
-    running2()
 

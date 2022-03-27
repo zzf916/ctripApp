@@ -41,9 +41,10 @@ class HotelDetailPage(BasePage):
             timestamp = time.strftime('%Y%m%d%H%M%S')
             fileDir = os.path.join(os.path.dirname(__file__), '../sources')
             file = os.path.abspath(fileDir + '/' + 'ctripPageSources' + timestamp + '.xml')
+
             # print(self.driver.page_source)
-            with open(file, mode='w', encoding='utf-8') as f:
-                f.write(self.driver.page_source)
+            # with open(file, mode='w', encoding='utf-8') as f:
+            #     f.write(self.driver.page_source)
 
             rooms = self.locators(self.roomDetail)
             if rooms is not None:

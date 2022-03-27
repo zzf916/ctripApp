@@ -8,6 +8,7 @@ import configparser
 import os
 import re
 import time
+from itertools import cycle
 
 import openpyxl
 
@@ -63,18 +64,39 @@ class Excel(object):
         self.c_max = self.sheet.max_column
 
     def ExcelR(self):
+        """
+        一次读取整个文件
+        :return:
+        """
         list_ = []
-        for i in range(1, self.r_max + 1):
+        for r in range(1, self.r_max + 1):
             # hotel_data = dict(hotelName=self.sheet.cell(row=i, column=3).value,
             #                   row=i,
             #                   r_maxr=self.r_max,
             #                   c_max=self.c_max)
             # yield hotel_data
-            hotel_data = (self.sheet.cell(row=i, column=3).value, self.sheet.cell(row=i, column=2).value)
+            hotel_data = (self.sheet.cell(row=r, column=3).value, self.sheet.cell(row=r, column=2).value)
             list_.append(hotel_data)
         return list_
 
+    def CycleR(self):
+        """
+        一次读一行
+        :return:
+        """
+        for r in range(1, self.r_max + 1):
+            hotel_data = (self.sheet.cell(row=r, column=3).value, self.sheet.cell(row=r, column=2).value, i)
+
+            yield hotel_data
+
+
     def ExcelW(self, args, row):
+        """
+        Excel写数据
+        :param args: 写入的数据
+        :param row: 行数
+        :return:
+        """
         try:
             self.sheet.cell(row=row, column=self.c_max + 1).value = args
             self.workbook.save(self.workbook_path)
@@ -90,3 +112,10 @@ if __name__ == '__main__':
     print(data)
     # row = data.get('row')
     # Excel(workbook_path=workbook, sheet='Sheet1').ExcelW(timestamp, 1)
+    i = Excel(workbook_path=workbook, sheet='Sheet1').CycleR()
+    n = cycle(data)
+
+    while True:
+
+        print(next(n))
+        print('\n')

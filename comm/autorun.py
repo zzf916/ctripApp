@@ -68,7 +68,7 @@ class Gob(object):
         time.sleep(3)
 
         loop1(hotelName=hotel[Gob.start_data-1], filename=file, driver=driver)
-        for i in range(Gob.start_data, Gob.start_data+1):
+        for i in range(Gob.start_data, Gob.start_data+7):
             a = random.randint(3, 6)
             time.sleep(a)
             try:
