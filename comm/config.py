@@ -53,7 +53,6 @@ def getConfigData(section):
     return dict_ini
 
 
-
 # Excel文件读写数据
 class Excel(object):
     def __init__(self, *, workbook_path, sheet):
@@ -70,14 +69,25 @@ class Excel(object):
         """
         list_ = []
         for r in range(1, self.r_max + 1):
-            # hotel_data = dict(hotelName=self.sheet.cell(row=i, column=3).value,
-            #                   row=i,
-            #                   r_maxr=self.r_max,
-            #                   c_max=self.c_max)
-            # yield hotel_data
+
             hotel_data = (self.sheet.cell(row=r, column=3).value, self.sheet.cell(row=r, column=2).value)
             list_.append(hotel_data)
         return list_
+
+    def numR(self, num: int):
+        """
+        :param num:读取的数据数
+        :return:
+        """
+        list_ = []
+        for r in range(1, self.r_max + 1):
+            if len(list_) < num and self.sheet.cell(row=r, column=4).value is None:
+                hotel_data = (self.sheet.cell(row=r, column=3).value, self.sheet.cell(row=r, column=2).value, r)
+                list_.append(hotel_data)
+                print(len(list_))
+
+        return list_
+
 
     def CycleR(self):
         """
@@ -85,10 +95,9 @@ class Excel(object):
         :return:
         """
         for r in range(1, self.r_max + 1):
-            hotel_data = (self.sheet.cell(row=r, column=3).value, self.sheet.cell(row=r, column=2).value, i)
+            hotel_data = (self.sheet.cell(row=r, column=3).value, self.sheet.cell(row=r, column=2).value, r)
 
             yield hotel_data
-
 
     def ExcelW(self, args, row):
         """
@@ -105,17 +114,19 @@ class Excel(object):
 
 
 if __name__ == '__main__':
-    print(getConfigData('trip'))
+    # print(getConfigData('trip'))
     workbook = getConfigData('Excel').get('workbook')
-    print(workbook)
-    data = Excel(workbook_path=workbook, sheet='Sheet1').ExcelR()
-    print(data)
+    # print(workbook)
+    # data = Excel(workbook_path=workbook, sheet='Sheet1').ExcelR()
+    # print(data)
     # row = data.get('row')
     # Excel(workbook_path=workbook, sheet='Sheet1').ExcelW(timestamp, 1)
-    i = Excel(workbook_path=workbook, sheet='Sheet1').CycleR()
-    n = cycle(data)
+    # i = Excel(workbook_path=workbook, sheet='Sheet1').CycleR()
+    # n = cycle(data)
 
-    while True:
-
-        print(next(n))
-        print('\n')
+    # while True:
+    #     print(next(n))
+    #     print('\n')
+    data = Excel(workbook_path=workbook, sheet='Sheet1').numR(2)
+    # print(len(data))
+    print(data)
