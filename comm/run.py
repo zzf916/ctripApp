@@ -18,18 +18,22 @@ from page.hotelListSearch_page import HotelListSearchPage
 from page.hotelList_page import HotelListPage
 from page.hotelSearch_page import HotelSearchPage
 
-excel = getConfigData('Excel').get('workbook')
-hotel = Excel(workbook_path=excel, sheet='Sheet1').ExcelR()
+workbook = getConfigData('Excel').get('workbook')
+
+excel = Excel(workbook_path=workbook, sheet='Sheet1')
+
+hotel = excel.numR(3)
+
 configData = getConfigData('trip')
 bigdata = getConfigData('bigdata')
 
-def loop1(hotelName: tuple, *, filename, driver, row=0):
+
+def loop1(hotelName: tuple, *, filename, driver):
     """
     打开应用到获取第一家酒店数据
     :param hotelName: 酒店名
     :param filename: 数据写入文件路径
     :param driver: driver对象
-    :param row:
     :return:
     """
     HotelListPage(driver=driver).action1()
@@ -37,15 +41,22 @@ def loop1(hotelName: tuple, *, filename, driver, row=0):
     HotelListPage(hotelName[0], driver=driver).action2()
     data = HotelDetailPage(webDriver=driver).action()
 
-    data_dict = {hotelName: data}
+    data_dict = {(hotelName[0], hotelName[1]): data}
     with open(filename, mode='w', encoding='UTF-8') as f:
         f.write(str(data_dict) + '\n')
     print('success')
+
+    if hotelName[2] == excel.r_max:
+        for r in range(1, excel.r_max + 1):
+            Excel(workbook_path=workbook, sheet='Sheet1').ExcelW(None, r)
+    else:
+        Excel(workbook_path=workbook, sheet='Sheet1').ExcelW("YYDS", hotelName[2])
 
 
 def loop2(pastHotel: tuple, hotelNow: tuple, *, filename, driver):
     """
     第二家开始的酒店
+    :param row:
     :param pastHotel: 上此搜索的酒店
     :param hotelNow: 本次搜索酒店
     :param filename:
@@ -60,10 +71,16 @@ def loop2(pastHotel: tuple, hotelNow: tuple, *, filename, driver):
 
     HotelListPage(hotelNow[0], driver=driver).action2()
     data = HotelDetailPage(webDriver=driver).action()
-    data_dict = {hotelNow: data}
+    data_dict = {(hotelNow[0], hotelNow[1]): data}
     with open(filename, mode='a', encoding='UTF-8') as f:
         f.write(str(data_dict) + '\n')
     print('success')
+
+    if hotelNow[2] == excel.r_max:
+        for r in range(1, excel.r_max+1):
+            Excel(workbook_path=workbook, sheet='Sheet1').ExcelW(None, r)
+    else:
+        Excel(workbook_path=workbook, sheet='Sheet1').ExcelW("YYDS", hotelNow[2])
 
 
 def running1():
@@ -78,22 +95,21 @@ def running1():
     time.sleep(3)
     HotelSearchPage(webDriver=driver).action()
     time.sleep(3)
-
+    print(hotel)
     loop1(hotelName=hotel[0], filename=file, driver=driver)
-    for i in range(1, int(len(hotel) / 2)):
-        a = random.randint(3, 6)
-        time.sleep(a)
+    if len(hotel) > 1:
+        for i in range(1, len(hotel)):
+            a = random.randint(3, 6)
+            time.sleep(a)
 
-        loop2(hotel[i - 1], hotel[i], filename=file, driver=driver)
+            loop2(hotel[i - 1], hotel[i], filename=file, driver=driver)
 
     BasePage(webDriver=driver).driver.quit()
 
     LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
 
-    # time.sleep(60 * 60 * 10)
 
 
 if __name__ == '__main__':
     running1()
     time.sleep(3)
-

@@ -81,10 +81,9 @@ class Excel(object):
         """
         list_ = []
         for r in range(1, self.r_max + 1):
-            if len(list_) < num and self.sheet.cell(row=r, column=4).value is None:
+            if len(list_) < num and self.sheet.cell(row=r, column=5).value is None:
                 hotel_data = (self.sheet.cell(row=r, column=3).value, self.sheet.cell(row=r, column=2).value, r)
                 list_.append(hotel_data)
-                print(len(list_))
 
         return list_
 
@@ -107,10 +106,11 @@ class Excel(object):
         :return:
         """
         try:
-            self.sheet.cell(row=row, column=self.c_max + 1).value = args
+            self.sheet.cell(row=row, column=5).value = args
             self.workbook.save(self.workbook_path)
-        except Exception:
-            log.info("写入Excel失败")
+            self.workbook.close()
+        except PermissionError as e:
+            log.info("写入Excel失败:{}".format(e))
 
 
 if __name__ == '__main__':
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     # data = Excel(workbook_path=workbook, sheet='Sheet1').ExcelR()
     # print(data)
     # row = data.get('row')
-    # Excel(workbook_path=workbook, sheet='Sheet1').ExcelW(timestamp, 1)
+    Excel(workbook_path=workbook, sheet='Sheet1').ExcelW(timestamp, 1)
     # i = Excel(workbook_path=workbook, sheet='Sheet1').CycleR()
     # n = cycle(data)
 
