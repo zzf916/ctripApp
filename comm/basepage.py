@@ -28,6 +28,7 @@ class BasePage(object):
         try:
             # WebDriverWait(self.driver, 5, 1).until(lambda driver: driver.find_element(*loc).is_displayed())
             e = self.driver.find_elements(*loc)[index]
+
             log.info("获取元素：%s" % str(loc))
             return e
         except Exception:

@@ -52,6 +52,7 @@ def loop2(pastHotel: tuple, hotelNow: tuple, *, filename, driver):
     print('success')
 
 class Gob(object):
+
     start_data = 1
 
     def running1(self):
