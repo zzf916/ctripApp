@@ -7,6 +7,7 @@
 import os
 import random
 import time
+from itertools import cycle
 
 import schedule
 from appium import webdriver
@@ -21,7 +22,7 @@ from page.hotelList_page import HotelListPage
 from page.hotelSearch_page import HotelSearchPage
 
 excel = getConfigData('Excel').get('workbook')
-hotel = Excel(workbook_path=excel, sheet='Sheet1').ExcelR()
+hotel = cycle(Excel(workbook_path=excel, sheet='Sheet1').ExcelR())
 configData = getConfigData('trip')
 bigdata = getConfigData('bigdata')
 
