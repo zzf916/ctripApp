@@ -3,6 +3,7 @@
 # Author: Off
 # Date : 2022/2/14
 # Desc : 酒店详情页
+import json
 import os
 import re
 import time
@@ -13,7 +14,7 @@ from comm.basepage import BasePage
 
 
 def getData(*, list2: list):
-    list1 = [("床房", "房型"), ("早餐", "早餐"), ("张", "床型"), ("入住", "人数"), ("㎡", "平方")]
+    list1 = [("房", "房型"), ("早餐", "早餐"), ("张", "床型"), ("入住", "人数"), ("㎡", "平方")]
     dict_ = {"房型": None, "早餐": None, "床型": None, "人数": None, "平方": None}
     for i in list1:
         for d in list2:
@@ -35,7 +36,8 @@ class HotelDetailPage(BasePage):
 
     developFlag = (By.CLASS_NAME, "android.widget.ImageView")  # 展开标记
 
-    developDetail = (By.XPATH, "//*[contains(@content-desc, '立即确认') and @class='android.view.View']")  # 展开后房型
+    developDetail = (By.XPATH,
+                     "//*[contains(@content-desc, '立即确认') and not(contains(@content-desc, '㎡')) and @class='android.view.View']")  # 展开后房型
 
     orderFlag = (By.XPATH, "//*[@content-desc='订') and @class='android.view.View']")  # 可定
 
@@ -56,44 +58,45 @@ class HotelDetailPage(BasePage):
             if rooms is not None:
                 for room in rooms:
                     roomDetailData = room.get_attribute("content-desc")
-
                     room_detail = roomDetailData.split('\n')
                     dict_ = getData(list2=room_detail)
-
-                    print(dict_)
-                    time.sleep(3)
+                    print(dict_['房型'])
+                    if len(list_) > 0 and json.loads(list_[-1]).get('房型') == dict_.get('房型'):
+                        continue
                     if '早餐' not in roomDetailData:
                         try:
                             room.find_element_by_class_name("android.widget.ImageView").click()
+                            time.sleep(3)
                         except Exception:
                             pass
-                        time.sleep(3)
                         while True:
                             roomDetails = self.locators(self.developDetail)
-                            for roomD in roomDetails:
-                                room_Detail = roomD.get_attribute("content-desc")
-                                # print(room_Detail.split('\n'))
-                                # print('\n')
-                                try:
-                                    price = roomD.find_element_by_xpath(
-                                        "//*[contains(@content-desc, '¥')]").get_attribute(
-                                        'content-desc').replace('\n', "")
-                                except Exception:
-                                    price = None
-                                try:
-                                    roomD.find_element_by_xpath("//*[@content-desc='订' and @class='android.view.View']")
-                                    dict_['isOrder'] = True
-                                except Exception:
-                                    dict_['isOrder'] = False
-                                dict_['价格'] = price
-                                dict_['早餐'] = room_Detail.split('\n')[0]
-                                list_.append(str(dict_))
-                                print(list_)
-                            if len(roomDetails) >= 4:
-                                self.driver.swipe(self.width / 2, self.height * 0.8, self.width / 2, self.height * 0.4,
-                                                  duration=2000)
-                            else:
+                            if len(roomDetails) == 0:
                                 break
+                            elif len(roomDetails) < 5:
+                                for roomD in roomDetails:
+                                    room_Detail = roomD.get_attribute("content-desc")
+                                    # print(room_Detail+'\n')
+                                    try:
+                                        price = roomD.find_element_by_xpath(
+                                            "//*[contains(@content-desc, '¥')]").get_attribute('content-desc').replace('\n', "")
+                                    except Exception:
+                                        price = None
+                                    try:
+                                        roomD.find_element_by_xpath("//*[@content-desc='订' and @class='android.view.View']")
+                                        dict_['isOrder'] = True
+                                    except Exception:
+                                        dict_['isOrder'] = False
+                                    dict_['价格'] = price
+                                    dict_['早餐'] = room_Detail.split('\n')[0]
+                                    list_.append(json.dumps(dict_, ensure_ascii=False))
+                                    print(list_)
+                                break
+                            if len(roomDetails) > 4:
+                                self.driver.swipe(self.width / 2, self.height * 0.8, self.width / 2, self.height * 0.2, duration=2500)
+                                time.sleep(2)
+
+
                     else:
                         try:
                             price = room.find_element_by_xpath("//*[contains(@content-desc, '¥')]").get_attribute(
@@ -106,11 +109,11 @@ class HotelDetailPage(BasePage):
                         except Exception:
                             dict_['isOrder'] = False
                         dict_['价格'] = price
-                        list_.append(str(dict_))
-                        print(list_)
+                        list_.append(json.dumps(dict_, ensure_ascii=False))
+                        # print(list_)
 
             if self.locator(self.exitFlag) is None:
-                self.driver.swipe(self.width / 2, self.height * 0.8, self.width / 2, self.height * 0.3, duration=2000)
+                self.driver.swipe(self.width / 2, self.height * 0.8, self.width / 2, self.height * 0.3, duration=2500)
             else:
                 break
         self.driver.back()
