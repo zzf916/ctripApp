@@ -7,7 +7,7 @@ import json
 import os
 import re
 import time
-
+import jsonpath
 from selenium.webdriver.common.by import By
 
 from comm.basepage import BasePage
@@ -37,7 +37,8 @@ class HotelDetailPage(BasePage):
     developFlag = (By.CLASS_NAME, "android.widget.ImageView")  # 展开标记
 
     developDetail = (By.XPATH,
-                     "//*[contains(@content-desc, '立即确认') and not(contains(@content-desc, '㎡')) and @class='android.view.View']")  # 展开后房型
+                     "//*[contains(@content-desc, '立即确认') and not(contains(@content-desc, '㎡')) and "
+                     "@class='android.view.View']")  # 展开后房型
 
     orderFlag = (By.XPATH, "//*[@content-desc='订') and @class='android.view.View']")  # 可定
 
@@ -61,7 +62,7 @@ class HotelDetailPage(BasePage):
                     room_detail = roomDetailData.split('\n')
                     dict_ = getData(list2=room_detail)
                     print(dict_['房型'])
-                    if len(list_) > 0 and json.loads(list_[-1]).get('房型') == dict_.get('房型'):
+                    if len(list_) > 0 and dict_.get('房型') not in jsonpath.jsonpath(list_, '$..房型'):
                         continue
                     if '早餐' not in roomDetailData:
                         try:
@@ -89,7 +90,9 @@ class HotelDetailPage(BasePage):
                                         dict_['isOrder'] = False
                                     dict_['价格'] = price
                                     dict_['早餐'] = room_Detail.split('\n')[0]
-                                    list_.append(json.dumps(dict_, ensure_ascii=False))
+                                    # list_.append(json.dumps(dict_, ensure_ascii=False))
+                                    list_.append(dict_)
+
                                     print(list_)
                                 break
                             if len(roomDetails) > 4:
@@ -109,7 +112,8 @@ class HotelDetailPage(BasePage):
                         except Exception:
                             dict_['isOrder'] = False
                         dict_['价格'] = price
-                        list_.append(json.dumps(dict_, ensure_ascii=False))
+                        # list_.append(json.dumps(dict_, ensure_ascii=False))
+                        list_.append(dict_)
                         # print(list_)
 
             if self.locator(self.exitFlag) is None:
@@ -119,5 +123,6 @@ class HotelDetailPage(BasePage):
         self.driver.back()
         # self.locator(self.returnFlag).click()
 
-        l2 = sorted(set(list_), key=list_.index)
+        # l2 = sorted(set(list_), key=list_.index)
+        l2 = sorted(set(list(map(str, list_))), key=list(map(str, list_)).index)
         return l2
