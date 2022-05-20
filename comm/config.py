@@ -65,7 +65,7 @@ class Excel(object):
     def ExcelR(self):
         """
         一次读取整个文件
-        :return:
+        :return:list [(酒店名，酒店编号)]
         """
         list_ = []
         for r in range(1, self.r_max + 1):
@@ -77,7 +77,7 @@ class Excel(object):
     def numR(self, num: int):
         """
         :param num:读取的数据数
-        :return:
+        :return: list [(酒店名，酒店编号, 行数)]
         """
         list_ = []
         for r in range(1, self.r_max + 1):
