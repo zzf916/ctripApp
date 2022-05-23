@@ -21,8 +21,19 @@ from page.hotelSearch_page import HotelSearchPage
 
 class Step(object):
 
-    def __init__(self, driver):
+    def __init__(self, driver, workbook):
         self.driver = driver
+        self.workbook = workbook
+
+    def loop0(self):
+        """
+        开始-酒店列表
+        :return:
+        """
+        FirstPage(webDriver=self.driver).action()
+        time.sleep(3)
+        HotelSearchPage(webDriver=self.driver).action()
+        time.sleep(3)
 
     def loop1(self, hotelName: tuple, *, filename):
         """
@@ -31,18 +42,25 @@ class Step(object):
         :param filename: 数据写入文件路径
         :return:
         """
-        FirstPage(webDriver=self.driver).action()
-        time.sleep(3)
-        HotelSearchPage(webDriver=self.driver).action()
-        time.sleep(3)
-        HotelListPage(driver=self.driver).action1()
-        HotelListSearchPage(hotelName[0], driver=self.driver).action()
-        HotelListPage(hotelName[0], driver=self.driver).action2()
-        data = HotelDetailPage(webDriver=self.driver).action()
+        try:
+            HotelListPage(driver=self.driver).action1()
+            HotelListSearchPage(hotelName[0], driver=self.driver).action()
+            HotelListPage(hotelName[0], driver=self.driver).action2()
+            data = HotelDetailPage(webDriver=self.driver).action()
 
-        data_dict = {(hotelName[0], hotelName[1]): data}
+            data_dict = {(hotelName[0], hotelName[1]): data}
+            with open(filename, mode='w', encoding='UTF-8') as f:
+                f.write(str(data_dict) + '\n')
 
-        return data_dict
+            Excel(workbook_path=self.workbook, sheet='Sheet1').ExcelW("S", hotelName[2])
+
+            print('success')
+            return data_dict
+        except Exception as e:
+            Excel(workbook_path=self.workbook, sheet='Sheet1').ExcelW("F", hotelName[2])
+            raise e
+
+
 
     def loop2(self, pastHotel: tuple, hotelNow: tuple, *, filename):
         """
@@ -51,15 +69,25 @@ class Step(object):
             :param hotelNow: 本次搜索酒店
             :param filename:
             :return:
-            """
-        HotelListPage(name=pastHotel[0], driver=self.driver).action3()
-        HotelListSearchPage(hotelNow[0], driver=self.driver).action()
+        """
+        try:
 
-        b = random.randint(3, 6)
-        time.sleep(b)
+            HotelListPage(name=pastHotel[0], driver=self.driver).action3()
+            HotelListSearchPage(hotelNow[0], driver=self.driver).action()
 
-        HotelListPage(hotelNow[0], driver=self.driver).action2()
-        data = HotelDetailPage(webDriver=self.driver).action()
-        data_dict = {(hotelNow[0], hotelNow[1]): data}
+            b = random.randint(3, 6)
+            time.sleep(b)
 
-        return data_dict
+            HotelListPage(hotelNow[0], driver=self.driver).action2()
+            data = HotelDetailPage(webDriver=self.driver).action()
+            data_dict = {(hotelNow[0], hotelNow[1]): data}
+            with open(filename, mode='w', encoding='UTF-8') as f:
+                f.write(str(data_dict) + '\n')
+            Excel(workbook_path=self.workbook, sheet='Sheet1').ExcelW("S", hotelNow[2])
+
+            print('success')
+            return data_dict
+        except Exception as e:
+            Excel(workbook_path=self.workbook, sheet='Sheet1').ExcelW("F", hotelNow[2])
+            raise e
+
