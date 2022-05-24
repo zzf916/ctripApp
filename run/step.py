@@ -2,17 +2,11 @@
 # File : step.py
 # Author: Off
 # Date : 2022/5/19
-# Desc :
-import json
-import os
+# Desc : 流程
+
 import random
 import time
-
-from appium import webdriver
-
-from comm.basepage import BasePage
-from comm.config import Excel, getConfigData
-from comm.linuxCon import LinuxBase
+from comm.config import Excel
 from page.first_page import FirstPage
 from page.hotelDetail_page import HotelDetailPage
 from page.hotelListSearch_page import HotelListSearchPage

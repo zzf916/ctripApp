@@ -21,5 +21,22 @@ l3 = jsonpath.jsonpath(l2, '$..房型')
 
 a = {"a": 11}
 b = a.copy()
-print(id(a))
-print(id(b))
+
+# print(id(a))
+# print(id(b))
+
+l5 = []
+
+
+def mySum(L):
+    if len(L) <= 0:
+        return 0
+    else:
+        l5.append(L)
+        k = l5
+        print(k)
+        return mySum(L[1:])  # 递归呼叫
+
+
+print(mySum([1, 2, 3, 4, 5, 6]))
+print(l5)

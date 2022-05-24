@@ -2,11 +2,13 @@
 # File : autorun.py
 # Author: Off
 # Date : 2022/5/24
-# Desc :
+# Desc : 定时任务
 
 import os
 import random
 import time
+
+import schedule
 from appium import webdriver
 
 from comm.basepage import BasePage
@@ -33,7 +35,7 @@ def job(*, hotel, driver, file, filename):
                 Step(driver, workbook).loop2(hotel[i - 1], hotel[i], filename=file)
 
         BasePage(webDriver=driver).driver.quit()
-        # LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
+        LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
 
 
 def run():
@@ -53,4 +55,7 @@ def run():
 
 
 if __name__ == '__main__':
-    run()
+    schedule.every().day.at('11:19:00').do(run)
+
+    while True:
+        schedule.run_pending()

@@ -69,7 +69,6 @@ class Excel(object):
         """
         list_ = []
         for r in range(1, self.r_max + 1):
-
             hotel_data = (self.sheet.cell(row=r, column=3).value, self.sheet.cell(row=r, column=2).value)
             list_.append(hotel_data)
         return list_
@@ -87,7 +86,6 @@ class Excel(object):
 
         return list_
 
-
     def CycleR(self):
         """
         一次读一行
@@ -98,15 +96,16 @@ class Excel(object):
 
             yield hotel_data
 
-    def ExcelW(self, args, row):
+    def ExcelW(self, args, row, column=5):
         """
         Excel写数据
+        :param column:
         :param args: 写入的数据
         :param row: 行数
         :return:
         """
         try:
-            self.sheet.cell(row=row, column=5).value = args
+            self.sheet.cell(row=row, column=column).value = args
             self.workbook.save(self.workbook_path)
             self.workbook.close()
         except PermissionError as e:
