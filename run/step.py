@@ -14,6 +14,9 @@ from page.hotelList_page import HotelListPage
 from page.hotelSearch_page import HotelSearchPage
 
 class Step(object):
+    """
+
+    """
 
     def __init__(self, driver, workbook):
         self.driver = driver
