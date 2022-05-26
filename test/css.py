@@ -5,6 +5,8 @@
 # Desc :
 import re
 
+import schedule
+
 a = 'IWG5H5\n猜您喜欢\n无早餐\n2张1.3米单人床\n2人入住\n32㎡\n部分禁烟\n免费取消\n立即确认\n免费升房\n延迟退房\n欢迎水果\n预约发票\n免费取消超值价'
 b = ['IWG5H5', '猜您喜欢', '无早餐', '2张1.3米单人床', '2人入住', '32㎡', '部分禁烟', '免费取消', '立即确认', '免费升房', '延迟退房', '欢迎水果', '预约发票',
      '免费取消超值价']
@@ -26,3 +28,40 @@ def getData(*, list2: list):
 
 c = getData(list2=b)
 print(c)
+
+
+class Test(object):
+
+    def __init__(self):
+        self.listT = []
+
+    def t1(self):
+        self.listT.append('ss')
+        # print('ss')
+
+    def t2(self):
+        # print('ff')
+        self.listT.append('ff')
+
+
+def job():
+    aa = Test()
+    aa.t2()
+    aa.t1()
+    print(aa.listT)
+    return aa.listT
+
+
+def run():
+    hh = job()
+    if len(hh) > 0:
+        print('第二次运行')
+        job()
+
+
+if __name__ == '__main__':
+
+    schedule.every().second.do(run)
+
+    while True:
+        schedule.run_pending()

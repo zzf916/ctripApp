@@ -14,11 +14,9 @@ from page.hotelList_page import HotelListPage
 from page.hotelSearch_page import HotelSearchPage
 
 class Step(object):
-    """
-
-    """
 
     def __init__(self, driver, workbook):
+        self.faiList = []
         self.driver = driver
         self.workbook = workbook
 
@@ -50,10 +48,10 @@ class Step(object):
                 f.write(str(data_dict) + '\n')
 
             Excel(workbook_path=self.workbook, sheet='Sheet1').ExcelW("S", hotelName[2])
-
             print('success')
             return data_dict
         except Exception as e:
+            self.faiList.append(hotelName)
             Excel(workbook_path=self.workbook, sheet='Sheet1').ExcelW("F", hotelName[2])
             raise e
 
@@ -85,6 +83,8 @@ class Step(object):
             print('success')
             return data_dict
         except Exception as e:
+            self.faiList.append(hotelNow)
+
             Excel(workbook_path=self.workbook, sheet='Sheet1').ExcelW("F", hotelNow[2])
             raise e
 

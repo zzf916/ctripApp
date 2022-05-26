@@ -21,21 +21,24 @@ configData = getConfigData('trip')
 bigdata = getConfigData('bigdata')
 
 
-def job(*, hotel, driver, file, filename):
+def job(*, hotel, driver, file):
+    step = Step(driver, workbook)
+
     if len(hotel) == 0:
         return None
     elif len(hotel) > 0:
-        Step(driver, workbook).loop0()
-        Step(driver, workbook).loop1(hotelName=hotel[0], filename=file)
+        step.loop0()
+        step.loop1(hotelName=hotel[0], filename=file)
         if len(hotel) > 1:
             for i in range(1, len(hotel)):
                 a = random.randint(3, 6)
                 time.sleep(a)
 
-                Step(driver, workbook).loop2(hotel[i - 1], hotel[i], filename=file)
+                step.loop2(hotel[i - 1], hotel[i], filename=file)
 
         BasePage(webDriver=driver).driver.quit()
-        LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
+
+        return step.faiList
 
 
 def run():
@@ -51,10 +54,18 @@ def run():
     file = os.path.abspath(fileDir + '/' + 'ctrip' + timestamp + '.txt')
     filename = 'ctrip' + timestamp + '.txt'
 
-    job(driver=driver, hotel=hotel, file=file, filename=filename)
+    faiList = job(driver=driver, hotel=hotel, file=file)
+
+    if len(faiList) > 0:
+
+        job(driver=driver, hotel=faiList, file=file)
+
+
+    LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
 
 
 if __name__ == '__main__':
+
     schedule.every().day.at('11:19:00').do(run)
 
     while True:
