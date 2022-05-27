@@ -27,16 +27,20 @@ def job(*, hotel, driver, file):
     if len(hotel) == 0:
         return None
     elif len(hotel) > 0:
-        step.loop0()
-        step.loop1(hotelName=hotel[0], filename=file)
-        if len(hotel) > 1:
-            for i in range(1, len(hotel)):
-                a = random.randint(3, 6)
-                time.sleep(a)
+        try:
+            step.loop0()
+            step.loop1(hotelName=hotel[0], filename=file)
+            if len(hotel) > 1:
+                for i in range(1, len(hotel)):
+                    a = random.randint(3, 6)
+                    time.sleep(a)
 
-                step.loop2(hotel[i - 1], hotel[i], filename=file)
+                    step.loop2(hotel[i - 1], hotel[i], filename=file)
+        except Exception as e:
+            raise e
+        finally:
 
-        BasePage(webDriver=driver).driver.quit()
+            BasePage(webDriver=driver).driver.quit()
 
         return step.faiList
 
@@ -61,12 +65,14 @@ def run():
         job(driver=driver, hotel=faiList, file=file)
 
 
-    LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
+    # LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
 
 
 if __name__ == '__main__':
 
-    schedule.every().day.at('11:19:00').do(run)
+    run()
 
-    while True:
-        schedule.run_pending()
+    # schedule.every().day.at('11:19:00').do(run)
+    #
+    # while True:
+    #     schedule.run_pending()

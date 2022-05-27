@@ -67,7 +67,7 @@ class Step(object):
         """
         try:
 
-            HotelListPage(name=pastHotel[0], driver=self.driver).action3()
+            HotelListPage(name=pastHotel[0], driver=self.driver).action4()
             HotelListSearchPage(hotelNow[0], driver=self.driver).action()
 
             b = random.randint(3, 6)

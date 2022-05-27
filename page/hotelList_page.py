@@ -18,24 +18,25 @@ class HotelListPage(BasePage):
         self.hotel_name = name
         self.hotel = (By.XPATH, '//*[contains(@content-desc, "{}")]'.format(self.hotel_name))  # 酒店
         self.search = (By.XPATH, '//*[@class="android.widget.ImageView" and @content-desc="关键字/位置/品牌/酒店名"]')  # 搜索框
-
+        self.search2 = (By.XPATH, '//*[@class="android.view.View"]')
 
     def action1(self):
         a = random.randint(1, 3)
         time.sleep(a)
-
         self.locator(self.search).click()
 
     def action2(self):
-
         a = random.randint(3, 6)
         time.sleep(a)
-
         self.locators(self.hotel)[1].click()
 
     def action3(self):
         a = random.randint(1, 3)
         time.sleep(a)
-
         self.locator(self.hotel).click()
+
+    def action4(self):
+        time.sleep(2)
+        self.locators(self.search2)[3].click()
+
 
