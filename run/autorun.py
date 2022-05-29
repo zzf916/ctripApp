@@ -37,12 +37,11 @@ def job(*, hotel, driver, file):
 
                     step.loop2(hotel[i - 1], hotel[i], filename=file)
         except Exception as e:
-            raise e
-        finally:
 
             BasePage(webDriver=driver).driver.quit()
+            return step.faiList
 
-        return step.faiList
+
 
 
 def run():
