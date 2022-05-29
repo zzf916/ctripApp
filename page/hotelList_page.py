@@ -18,7 +18,7 @@ class HotelListPage(BasePage):
         self.hotel_name = name
         self.hotel = (By.XPATH, '//*[contains(@content-desc, "{}")]'.format(self.hotel_name))  # 酒店
         self.search = (By.XPATH, '//*[@class="android.widget.ImageView" and @content-desc="关键字/位置/品牌/酒店名"]')  # 搜索框
-        self.search2 = (By.XPATH, '//*[@class="android.view.View"]')
+        self.search2 = (By.CLASS_NAME, 'android.view.View')
 
     def action1(self):
         a = random.randint(1, 3)

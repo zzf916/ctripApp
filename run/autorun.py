@@ -32,13 +32,17 @@ def job(*, hotel, driver, file):
             step.loop1(hotelName=hotel[0], filename=file)
             if len(hotel) > 1:
                 for i in range(1, len(hotel)):
-                    a = random.randint(3, 6)
+                    a = random.randint(3, 5)
                     time.sleep(a)
-
-                    step.loop2(hotel[i - 1], hotel[i], filename=file)
+                    try:
+                        step.loop2(hotel[i - 1], hotel[i], filename=file)
+                    except IndexError:
+                        continue
         except Exception as e:
-
+            pass
+        finally:
             BasePage(webDriver=driver).driver.quit()
+            print(step.faiList)
             return step.faiList
 
 
