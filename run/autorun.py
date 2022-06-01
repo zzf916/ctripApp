@@ -22,10 +22,17 @@ bigdata = getConfigData('bigdata')
 
 
 def job(*, hotel, driver, file):
-    step = Step(driver, workbook)
+    """
 
+    :param hotel:
+    :param driver:
+    :param file:
+    :return:
+    """
+
+    step = Step(driver, workbook)
     if len(hotel) == 0:
-        return None
+        return []
     elif len(hotel) > 0:
         try:
             step.loop0()
@@ -38,35 +45,42 @@ def job(*, hotel, driver, file):
                         step.loop2(hotel[i - 1], hotel[i], filename=file)
                     except IndexError:
                         continue
-        except Exception as e:
+                    except Exception as e:
+                        for n in range(i, len(hotel)):
+                            Excel(workbook_path=workbook, sheet='Sheet1').ExcelW("F", hotel[n][2])
+                            step.faiList.append(hotel[n])
+                        pass
+        except Exception:
+            for n in range(0, len(hotel)):
+                Excel(workbook_path=workbook, sheet='Sheet1').ExcelW("F", hotel[n][2])
+                step.faiList.append(hotel[n])
             pass
         finally:
             BasePage(webDriver=driver).driver.quit()
-            print(step.faiList)
             return step.faiList
-
-
 
 
 def run():
     """
-
+    第一家酒店数据准确并能执行完整，才会失败酒店再次获取数据
     :return:
     """
 
-    hotel = Excel(workbook_path=workbook, sheet='Sheet1').numR(8)
+    hotel = Excel(workbook_path=workbook, sheet='Sheet1').numR(3)
     driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', configData)
     timestamp = time.strftime('%Y%m%d%H%M%S')
     fileDir = os.path.join(os.path.dirname(__file__), '../data')
     file = os.path.abspath(fileDir + '/' + 'ctrip' + timestamp + '.txt')
     filename = 'ctrip' + timestamp + '.txt'
 
+    print(hotel)
+    print('\n')
     faiList = job(driver=driver, hotel=hotel, file=file)
 
     if len(faiList) > 0:
-
-        job(driver=driver, hotel=faiList, file=file)
-
+        driver1 = webdriver.Remote('http://127.0.0.1:4723/wd/hub', configData)
+        print(faiList)
+        job(driver=driver1, hotel=faiList, file=file)
 
     # LinuxBase(bigdata).upload(file, f'/home/bigdata/{filename}')
 
